@@ -6,7 +6,6 @@ import { useAuth } from '@/lib/auth/auth-context';
 import { createClient } from '@/lib/supabase/client';
 import { ExamTemplate } from '@/types';
 import {
-  Award,
   Clock,
   CheckCircle2,
   AlertTriangle,
@@ -14,11 +13,11 @@ import {
   FileText,
   ShieldCheck,
   Loader2,
-  Sparkles,
   ChevronRight,
   Flame,
   Calendar,
-  Layers
+  Layers,
+  Sparkles
 } from 'lucide-react';
 
 export default function MockTestPage() {
@@ -42,10 +41,17 @@ export default function MockTestPage() {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          setTemplates(data as ExamTemplate[]);
-          // Default to Milliy 04.12.2022 if present, otherwise first
-          const targetMock = data.find((t: any) => t.id === '04122022-0000-0000-0000-000000000000') || data[0];
-          setSelectedTemplate(targetMock as ExamTemplate);
+          // Sort to prioritize 07.03.2026 and 04.12.2022 at the very top
+          const sorted = [...data].sort((a: any, b: any) => {
+            if (a.id === '07032026-0000-0000-0000-000000000000') return -1;
+            if (b.id === '07032026-0000-0000-0000-000000000000') return 1;
+            if (a.id === '04122022-0000-0000-0000-000000000000') return -1;
+            if (b.id === '04122022-0000-0000-0000-000000000000') return 1;
+            return 0;
+          });
+
+          setTemplates(sorted as ExamTemplate[]);
+          setSelectedTemplate(sorted[0] as ExamTemplate);
         }
       } catch (err) {
         console.error('Error fetching mock templates:', err);
@@ -75,7 +81,7 @@ export default function MockTestPage() {
         p_mode: 'exam',
         p_topic_id: null,
         p_subtopic_id: null,
-        p_question_count: activeTemplate.total_questions || 45,
+        p_question_count: activeTemplate.total_questions || 35,
         p_difficulty: 'mixed',
         p_time_limit_minutes: activeTemplate.duration_minutes || 150,
         p_exam_template_id: activeTemplate.id,
@@ -108,7 +114,8 @@ export default function MockTestPage() {
     );
   }
 
-  const primaryMock = templates.find((t) => t.id === '04122022-0000-0000-0000-000000000000') || selectedTemplate;
+  const mock0703 = templates.find((t) => t.id === '07032026-0000-0000-0000-000000000000');
+  const mock0412 = templates.find((t) => t.id === '04122022-0000-0000-0000-000000000000');
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
@@ -133,59 +140,100 @@ export default function MockTestPage() {
         </div>
       )}
 
-      {/* FEATURED: MILLIY 04.12.2022 HERO CARD */}
-      {primaryMock && (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4A2F8A] via-[#6C4AB6] to-[#9B7FE0] p-6 sm:p-10 text-white shadow-2xl shadow-purple-200">
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-3 max-w-xl">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md text-white text-xs font-extrabold">
-                <Calendar className="w-4 h-4" />
-                <span>04.12.2022 • TEST 1 (Asosiy Variant)</span>
+      {/* TOP FEATURED HERO CARDS: 07.03.2026 & 04.12.2022 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* HERO 1: 07.03.2026 */}
+        {mock0703 && (
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#351F66] via-[#6C4AB6] to-[#8E5FD9] p-6 sm:p-8 text-white shadow-xl shadow-purple-200/50 flex flex-col justify-between space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-black">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>YANGI • 07.03.2026 (1-variant)</span>
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-black/30 text-xs font-bold flex items-center space-x-1 text-amber-300">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>2:30 soat</span>
+                </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black leading-tight">
-                {primaryMock.title}
+
+              <h2 className="text-xl sm:text-2xl font-black leading-tight">
+                {mock0703.title}
               </h2>
-              <p className="text-xs sm:text-sm text-purple-100 leading-relaxed">
-                45 ta original imtihon savoli, to‘liq geometrik chizmalar, grafiklar, moslashtirish va ochiq topshiriqlar. 2:30 soat (150 daqiqa) vaqt hisobi bilan.
+              <p className="text-xs text-purple-100 leading-relaxed">
+                35 ta rasmiy test va moslashtirish topshiriqlari, tiniq geometrik chizmalar va to‘liq matematik yechimlar.
               </p>
 
-              {/* STAT BADGES */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-black/20 text-xs font-bold">
-                  <Clock className="w-4 h-4 text-amber-300" />
-                  <span>2:30 soat (150 daq)</span>
-                </div>
-                <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-black/20 text-xs font-bold">
-                  <FileText className="w-4 h-4 text-blue-300" />
-                  <span>45 ta topshiriq</span>
-                </div>
-                <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-black/20 text-xs font-bold">
-                  <ShieldCheck className="w-4 h-4 text-green-300" />
-                  <span>Rasmiy T-shkala baholash</span>
-                </div>
+              <div className="flex items-center gap-2 pt-2 text-xs font-semibold text-purple-200">
+                <span className="px-2.5 py-1 rounded-md bg-white/10">35 savol</span>
+                <span className="px-2.5 py-1 rounded-md bg-white/10">150 daqiqa</span>
+                <span className="px-2.5 py-1 rounded-md bg-white/10">Geometriya</span>
               </div>
             </div>
 
-            {/* ACTION BUTTON */}
-            <div className="flex-shrink-0">
-              <button
-                onClick={() => handleStartMock(primaryMock)}
-                disabled={starting}
-                className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white hover:bg-purple-50 text-[#6C4AB6] font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
-              >
-                {starting ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <>
-                    <Play className="w-6 h-6 fill-[#6C4AB6]" />
-                    <span>04.12.2022 Mock Testni Boshlash</span>
-                  </>
-                )}
-              </button>
-            </div>
+            <button
+              onClick={() => handleStartMock(mock0703)}
+              disabled={starting}
+              className="w-full py-4 rounded-2xl bg-white hover:bg-purple-50 text-[#6C4AB6] font-black text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+            >
+              {starting ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <Play className="w-5 h-5 fill-[#6C4AB6]" />
+                  <span>07.03.2026 Testni Boshlash</span>
+                </>
+              )}
+            </button>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* HERO 2: 04.12.2022 */}
+        {mock0412 && (
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#4A2F8A] via-[#5C3FA6] to-[#7E57C2] p-6 sm:p-8 text-white shadow-xl shadow-purple-200/50 flex flex-col justify-between space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-black">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>04.12.2022 • TEST 1 (Asosiy)</span>
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-black/30 text-xs font-bold flex items-center space-x-1 text-amber-300">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>2:30 soat</span>
+                </span>
+              </div>
+
+              <h2 className="text-xl sm:text-2xl font-black leading-tight">
+                {mock0412.title}
+              </h2>
+              <p className="text-xs text-purple-100 leading-relaxed">
+                45 ta original imtihon topshirig‘i, barcha grafiklar, moslashtirish va ochiq masalalar bilan to‘liq variant.
+              </p>
+
+              <div className="flex items-center gap-2 pt-2 text-xs font-semibold text-purple-200">
+                <span className="px-2.5 py-1 rounded-md bg-white/10">45 savol</span>
+                <span className="px-2.5 py-1 rounded-md bg-white/10">150 daqiqa</span>
+                <span className="px-2.5 py-1 rounded-md bg-white/10">Rasmiy shkala</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => handleStartMock(mock0412)}
+              disabled={starting}
+              className="w-full py-4 rounded-2xl bg-white hover:bg-purple-50 text-[#6C4AB6] font-black text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+            >
+              {starting ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <Play className="w-5 h-5 fill-[#6C4AB6]" />
+                  <span>04.12.2022 Testni Boshlash</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* ALL AVAILABLE MOCK TESTS */}
       <div className="space-y-4">
@@ -201,6 +249,7 @@ export default function MockTestPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((tpl) => {
+            const is0703 = tpl.id === '07032026-0000-0000-0000-000000000000';
             const is0412 = tpl.id === '04122022-0000-0000-0000-000000000000';
             const isSelected = selectedTemplate?.id === tpl.id;
 
@@ -209,7 +258,9 @@ export default function MockTestPage() {
                 key={tpl.id}
                 onClick={() => setSelectedTemplate(tpl)}
                 className={`p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-4 ${
-                  is0412
+                  is0703
+                    ? 'border-emerald-500/60 bg-emerald-50/40 shadow-md ring-2 ring-emerald-500/20'
+                    : is0412
                     ? 'border-[#6C4AB6] bg-purple-50/70 shadow-md ring-2 ring-[#6C4AB6]/20'
                     : isSelected
                     ? 'border-purple-300 bg-white shadow-sm'
@@ -220,16 +271,22 @@ export default function MockTestPage() {
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                        is0412
+                        is0703
+                          ? 'bg-emerald-600 text-white font-black'
+                          : is0412
                           ? 'bg-[#6C4AB6] text-white font-black'
                           : 'bg-purple-100 text-[#6C4AB6]'
                       }`}
                     >
-                      {is0412 ? '🔥 Tavsiya etiladi (04.12.2022)' : 'Mock Variant'}
+                      {is0703
+                        ? '✨ Yangi (07.03.2026)'
+                        : is0412
+                        ? '🔥 Tavsiya etiladi (04.12.2022)'
+                        : 'Mock Variant'}
                     </span>
                     <span className="text-xs font-bold text-gray-500 flex items-center space-x-1">
                       <Clock className="w-3.5 h-3.5 text-gray-400" />
-                      <span>{tpl.duration_minutes} daqiqa</span>
+                      <span>{tpl.duration_minutes} daqiqa (2:30 soat)</span>
                     </span>
                   </div>
 
@@ -252,7 +309,9 @@ export default function MockTestPage() {
                     }}
                     disabled={starting}
                     className={`px-4 py-2 rounded-xl text-xs font-extrabold flex items-center space-x-1.5 transition ${
-                      is0412
+                      is0703
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'
+                        : is0412
                         ? 'bg-[#6C4AB6] hover:bg-[#4A2F8A] text-white shadow-sm'
                         : 'bg-gray-100 hover:bg-[#6C4AB6] hover:text-white text-gray-700'
                     }`}
@@ -283,7 +342,7 @@ export default function MockTestPage() {
           <li className="flex items-start space-x-2">
             <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
             <span>
-              <strong>Savollar tuzilishi:</strong> 1–32 gacha test savollari, 33–35 moslashtirish, 36–45 ochiq va tahliliy masalalar.
+              <strong>Savollar tuzilishi:</strong> Test savollari, moslashtirish va ochiq masalalar rasmiy milliy sertifikat formati bo‘yicha taqdim etiladi.
             </span>
           </li>
           <li className="flex items-start space-x-2">
