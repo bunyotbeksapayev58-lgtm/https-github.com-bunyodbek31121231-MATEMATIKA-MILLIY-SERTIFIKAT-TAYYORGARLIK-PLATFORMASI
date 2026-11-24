@@ -1,0 +1,10 @@
+MATEMATIKA — TEST BANKI, 2-NASHR
+
+Eski 3 570 ta savol allaqachon saytda bo‘lsa: faqat yangi_5950.json YOKI yangi_5950.csv ni import qiling.
+Bo‘sh baza uchun: toliq_9520.json YOKI toliq_9520.csv ni import qiling.
+Yangi va to‘liq bankni ketma-ket import qilmang. Bir xil to‘plamning JSON va CSV nusxalarini ham birga import qilmang. ID noyob kalit bo‘lsin.
+
+Q01–Q30 avvalgi yozuvlar: ID, matn va kalitlar o‘zgartirilmagan. Q31–Q47 oson, Q48–Q64 o‘rta, Q65–Q80 qiyin yangi variantlar. Har mavzuda yakuniy taqsimot 27/27/26.
+Savollar pedagogik mashq uchun, rasmiy imtihon savollari emas. Yangi qismda har mavzu va daraja uchun yangi shablon asosida turli sonli variantlar berilgan. Bir sinovda ayni shablondan bir nechta variant tushmasligi uchun mavzu va darajalarni aralashtiring.
+
+JSON: UTF-8 massivi; CSV: UTF-8 BOM, vergul ajratkich. id, section, topic_id, topic, difficulty, question, options (CSV: option_A ... option_D), correct_option, answer, hint. Formulalar $$...$$ ichida. Kalitni serverda saqlang; variantlarni aralashtirsangiz javobning asl harfini saqlab qoling. mavzular.csv — tarkib va sonlar.
