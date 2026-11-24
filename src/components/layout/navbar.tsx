@@ -31,6 +31,7 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { href: '/dashboard', label: 'Dashboard', icon: BarChart2, authRequired: true },
     { href: '/topics', label: 'Mavzular', icon: BookOpen },
+    { href: '/mock', label: 'Mock Test (04.12.2022)', icon: Flame },
     { href: '/tests/mixed', label: 'Aralash test', icon: Shuffle },
     { href: '/exams', label: 'Milliy Imtihon', icon: Award },
     { href: '/mistakes', label: 'Xatolar daftari', icon: CheckCircle2, authRequired: true },

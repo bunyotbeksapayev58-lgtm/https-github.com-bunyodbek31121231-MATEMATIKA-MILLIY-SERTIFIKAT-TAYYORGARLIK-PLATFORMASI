@@ -126,7 +126,23 @@ export default function DashboardPage() {
       </div>
 
       {/* QUICK ACTIONS */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Link
+          href="/mock"
+          className="card-premium p-5 flex items-center space-x-4 group border-purple-200 bg-purple-50/50 hover:bg-purple-50 transition"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-[#6C4AB6] text-white flex items-center justify-center group-hover:scale-105 transition shadow-sm">
+            <Flame className="w-6 h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-1">
+              <span className="text-[10px] font-black uppercase text-purple-700 bg-white px-1.5 py-0.5 rounded border border-purple-200">2:30 soat</span>
+            </div>
+            <h4 className="font-extrabold text-gray-900 group-hover:text-[#6C4AB6] transition">Mock 04.12.2022</h4>
+            <p className="text-xs text-gray-500">45 ta original imtihon savoli</p>
+          </div>
+        </Link>
+
         <Link
           href="/topics"
           className="card-premium p-5 flex items-center space-x-4 group"
@@ -136,7 +152,7 @@ export default function DashboardPage() {
           </div>
           <div>
             <h4 className="font-bold text-gray-900 group-hover:text-[#6C4AB6] transition">Mavzuli test</h4>
-            <p className="text-xs text-gray-500">119 ta mavzudan birini tanlab mashq qiling</p>
+            <p className="text-xs text-gray-500">119 ta mavzudan mashq qiling</p>
           </div>
         </Link>
 
@@ -149,7 +165,7 @@ export default function DashboardPage() {
           </div>
           <div>
             <h4 className="font-bold text-gray-900 group-hover:text-blue-600 transition">Aralash test</h4>
-            <p className="text-xs text-gray-500">Bir nechta mavzulardan muvozanatli sinov</p>
+            <p className="text-xs text-gray-500">Muvozanatli sinov</p>
           </div>
         </Link>
 
@@ -161,8 +177,8 @@ export default function DashboardPage() {
             <Award className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="font-bold text-gray-900 group-hover:text-amber-600 transition">Milliy Imtihon</h4>
-            <p className="text-xs text-gray-500">35 ta savol, 150 daqiqa rasmiy simulyatsiya</p>
+            <h4 className="font-bold text-gray-900 group-hover:text-amber-600 transition">Milliy Variantlar</h4>
+            <p className="text-xs text-gray-500">2020–2026 variantlar to‘plami</p>
           </div>
         </Link>
       </div>
